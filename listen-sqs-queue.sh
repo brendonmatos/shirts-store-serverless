@@ -1,0 +1,1 @@
+aws --endpoint-url=http://localhost:4576 sqs receive-message --queue-url http://localhost:4576/123456789012/test_queue

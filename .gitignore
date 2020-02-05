@@ -1,0 +1,3 @@
+# Project exclude paths
+/catalog/node_modules/
+/http/node_modules/

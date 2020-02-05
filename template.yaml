@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-app
+  Sample SAM Template for sam-app
+
+Resources:
+  
+  CatalogAPI:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: catalog
+      Handler: api.handler
+      Runtime: nodejs10.x
+      
+      Events:
+        CatalogEndpoint:
+          Properties:
+            Method: any
+            Path: /catalog/
+          Type: Api
+        # EverythingElse:
+        #   Properties:
+        #     Method: any
+        #     Path: /{proxy+}
+        #   Type: Api
+
+
+  EventWriter:
+    Type: AWS::Serverless::Function
+
+    Properties:
+      CodeUri: http
+      Handler: eventWriter.handler
+      Runtime: nodejs10.x
+
+      Events:
+        EventWriterEndpoint:
+          Properties:
+            Method: any
+            Path: /event-writer/
+          Type: Api
