@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cassava": "^2.5.2"
+    "cassava": "^2.5.2",
+    "dynamoose": "^1.11.1",
+    "uuid": "^3.4.0"
   }
 }

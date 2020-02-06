@@ -10,11 +10,17 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: catalog
-      Handler: api.handler
+      Handler: index.handler
       Runtime: nodejs10.x
+      Timeout: 5
       
       Events:
-        CatalogEndpoint:
+#        CatalogEndpoint:
+#          Properties:
+#            Method: any
+#            Path: /catalog/{proxy+}
+#          Type: Api
+        CatalogEndpointRoot:
           Properties:
             Method: any
             Path: /catalog/
