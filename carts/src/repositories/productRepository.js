@@ -2,7 +2,7 @@ const uuid = require('uuid/v4')
 const _genericRepository = require('./_genericRepository')
 
 
-module.exports = _genericRepository('Catalog-Product', {
+module.exports = _genericRepository('Cart-Product', {
 	id: {
 		type: String,
 		default: () => uuid()
@@ -10,16 +10,7 @@ module.exports = _genericRepository('Catalog-Product', {
 	name: {
 		type: String
 	},
-	
-	description: {
-		type: String
-	},
-	
-	pictures: {
-		"main": String,
-		"secondaries": [ String ]
-	},
-	
+	main_picture: String,
 	price: {
 		from: Number,
 		to: Number

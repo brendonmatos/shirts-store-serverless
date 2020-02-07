@@ -5,7 +5,21 @@ Description: >
   Sample SAM Template for sam-app
 
 Resources:
-  
+  UserCartApi:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: carts
+      Handler: index.handler
+      Runtime: nodejs10.x
+      Timeout: 5
+
+      Events:
+        CatalogEndpointRoot:
+          Properties:
+            Method: any
+            Path: /user/cart/
+          Type: Api
+
   CatalogAPI:
     Type: AWS::Serverless::Function
     Properties:
@@ -15,34 +29,8 @@ Resources:
       Timeout: 5
       
       Events:
-#        CatalogEndpoint:
-#          Properties:
-#            Method: any
-#            Path: /catalog/{proxy+}
-#          Type: Api
         CatalogEndpointRoot:
           Properties:
             Method: any
             Path: /catalog/
-          Type: Api
-        # EverythingElse:
-        #   Properties:
-        #     Method: any
-        #     Path: /{proxy+}
-        #   Type: Api
-
-
-  EventWriter:
-    Type: AWS::Serverless::Function
-
-    Properties:
-      CodeUri: http
-      Handler: eventWriter.handler
-      Runtime: nodejs10.x
-
-      Events:
-        EventWriterEndpoint:
-          Properties:
-            Method: any
-            Path: /event-writer/
           Type: Api

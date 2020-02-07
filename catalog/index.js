@@ -30,7 +30,7 @@ router.route("/catalog/")
 
 module.exports.handler = async (event, context) => {
     
-    if( event.Records && event.Records[0].eventSource.indexOf(':sqs') >= 0 ) {
+    if( event.Records && event.Records[0] ) {
         return {
             statusCode: 500,
             body: "Handler not prepared to receive SQS messages"
