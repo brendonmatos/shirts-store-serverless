@@ -12,6 +12,7 @@ router.route("/user/cart/")
     
         const cartId = event.headers['Authorization']
         
+        console.log(cartId)
         const updateResult = await cartService.updateContent(cartId, {
             items: event.body.items,
             coupons: event.body.coupons

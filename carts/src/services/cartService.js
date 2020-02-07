@@ -58,9 +58,7 @@ class CartService {
 		// TODO: implement coupons
 		cart.coupons = []
 		
-		await cart.save()
-		
-		return cart
+		return cart.save()
 	}
 }
 
