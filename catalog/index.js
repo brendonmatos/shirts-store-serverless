@@ -1,57 +1,18 @@
-const AWS = require('aws-sdk')
-const uuid = require('uuid/v4')
-const dynamoose = require('dynamoose')
 const cassava = require('cassava')
-const productCreatedQueue = require('./ingest/productCreatedQueue')
 
-
-AWS.config.update({
-    region: 'us-east-1',
-});
-
-dynamoose.local("http://172.16.123.1:4569")
-
-const Product = dynamoose.model('Product', {
-    id: {
-        type: String,
-        default: () => uuid()
-    },
-    name: {
-        type: String
-    },
-    
-    description: {
-        type: String
-    },
-    
-    pictures: {
-        "main": String,
-        "secondaries": [ String ]
-    },
-    
-    price: {
-        from: Number,
-        to: Number
-    }
-});
+const productService = require('./src/services/productService')
 
 const router = new cassava.Router();
 
 router.route("/catalog/")
     .method("POST")
     .handler(async event => {
-        
-        const product = new Product(event.body)
-        await product.save()
-        
-        const createdMessage = await productCreatedQueue.add(product)
-        
+        const product = await productService.create(event.body)
         return {
             statusCode: 200,
             body: {
                 "message": "Product registered with success",
-                "created": product,
-                "sqsMessage": createdMessage.MessageId
+                "created": product
             }
         };
     });
@@ -62,7 +23,7 @@ router.route("/catalog/")
         return {
             statusCode: 200,
             body: {
-                items: await Product.scan().limit(20).exec(),
+                items: await productService.find(),
             }
         };
     });
