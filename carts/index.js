@@ -6,18 +6,18 @@ const productService = require('./src/services/productService')
 
 const router = new cassava.Router();
 
-router.route("/user/cart/")
+router.route("/user/cart")
     .method("PUT")
     .handler(async event => {
     
         const cartId = event.headers['Authorization']
         
-        console.log(cartId)
+        // console.log(cartId)
+        
         const updateResult = await cartService.updateContent(cartId, {
             items: event.body.items,
             coupons: event.body.coupons
         })
-        
         
         return {
             statusCode: 200,
@@ -28,7 +28,7 @@ router.route("/user/cart/")
         };
     });
 
-router.route("/user/cart/")
+router.route("/user/cart")
     .method("GET")
     .handler(async event => {
         
@@ -43,6 +43,8 @@ router.route("/user/cart/")
     });
 
 module.exports.handler = async (event, context) => {
+    
+    // console.log(event)
     
     if( event.Records && event.Records[0] ) {
         

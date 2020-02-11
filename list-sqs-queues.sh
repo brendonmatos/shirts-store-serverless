@@ -1,0 +1,1 @@
+aws --endpoint-url=http://localhost:4576 sqs list-queues

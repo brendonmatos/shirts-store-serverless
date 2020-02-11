@@ -3,8 +3,15 @@ const productCreatedQueue = require('../ingest/productCreatedQueue')
 
 class ProductService {
 	async create(productParams) {
+
 		const product = await productRepository.create(productParams)
-		await productCreatedQueue.add(product)
+		
+		try {
+			await productCreatedQueue.add(product)
+		} catch(E) {
+			// console.log(E)
+		}
+		
 		return product
 	}
 	async getById(id) {

@@ -4,10 +4,16 @@ const productService = require('./src/services/productService')
 
 const router = new cassava.Router();
 
-router.route("/catalog/")
-    .method("POST")
-    .handler(async event => {
-        const product = await productService.create(event.body)
+// router.route(new cassava.routes.LoggingRoute());
+
+router.route({
+    matches: evt => {
+        return (evt.httpMethod === "POST" ) &&
+            evt.path.indexOf("catalog") >= 0;
+    },
+    handle: async evt => {
+        console.log(evt)
+        const product = await productService.create(evt.body)
         return {
             statusCode: 200,
             body: {
@@ -15,18 +21,24 @@ router.route("/catalog/")
                 "created": product
             }
         };
-    });
+    }
+});
 
-router.route("/catalog/")
-    .method("GET")
-    .handler(async event => {
+
+router.route({
+    matches: evt => {
+        return (evt.httpMethod === "GET" ) &&
+            evt.path.indexOf("catalog") >= 0;
+    },
+    handle: async evt => {
         return {
             statusCode: 200,
             body: {
-                items: await productService.find(),
+                items: await productService.find()
             }
         };
-    });
+    }
+});
 
 module.exports.handler = async (event, context) => {
     
@@ -38,4 +50,10 @@ module.exports.handler = async (event, context) => {
     }
     
     return router.getLambdaHandler()(event,context)
+    //
+    // return {
+    //     statusCode: 200,
+    //     body: JSON.stringify(event)
+    // }
+    
 };

@@ -1,0 +1,1 @@
+aws --endpoint-url=http://localhost:4586 logs describe-log-groups

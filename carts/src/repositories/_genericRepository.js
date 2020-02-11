@@ -5,7 +5,7 @@ AWS.config.update({
 	region: 'us-east-1',
 });
 
-dynamoose.local("http://172.16.123.1:4569")
+dynamoose.local( process.env.DYNAMO_DB_ENDPOINT )
 
 module.exports = (name, schema) => {
 	const GenericModel = dynamoose.model(name, schema)

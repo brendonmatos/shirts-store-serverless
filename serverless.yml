@@ -1,0 +1,54 @@
+
+service: shirts-store
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'local'}
+  region: us-east-1
+  timeout: 15
+  environment:
+    DYNAMO_DB_ENDPOINT: '#DYNAMO'
+    SQS_PRODUCT_CREATED:
+      Ref: SQSProductCreated
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - sqs:*
+      Resource: '*'
+
+functions:
+  catalog:
+    handler: catalog/index.handler
+    events:
+      - http:
+          path: /catalog
+          method: any
+          cors: true
+
+      - http:
+          path: /catalog/{proxy+}
+          method: any
+          cors: true
+  carts:
+    handler: carts/index.handler
+    events:
+      - http:
+          path: /user/cart
+          method: any
+          cors: true
+      - http:
+          path: /user/cart/{proxy+}
+          method: any
+          cors: true
+      - sqs:
+          arn:
+            Fn::GetAtt: [SQSProductCreated, Arn]
+
+
+resources:
+  Resources:
+    SQSProductCreated:
+      Type: AWS::SQS::Queue
+
