@@ -116,6 +116,8 @@ class SQSQueue extends EventEmitter {
     constructor(endpoint, name) {
         super()
         this.endpoint = endpoint + '/' + name
+
+        console.log('SQS Queue port:', this.endpoint)
     }
 }   
 
@@ -167,6 +169,7 @@ class SQSOffline {
                 response.end()
             })
             this.server.listen(this.port, () => {
+                console.log('SQS port:', this.port)
                 resolve(this.server)
             })
         })
@@ -174,6 +177,7 @@ class SQSOffline {
 }
 
 class ApiGatewayOffline {
+    
     constructor(settings) {
         this.settings = settings
         this.server = express()
@@ -208,6 +212,7 @@ class ApiGatewayOffline {
     boot() {
         return new Promise( (resolve, reject) => {
             this.server.listen(3000, () => {
+                console.log('API GATEWAY port:', 3000)
                 resolve(this.server)
             })
         })
@@ -227,8 +232,10 @@ class DynamoDbOffline {
         return new Promise( (resolve, reject) => {
             
             // Listen on port 4567
-            this.dynaliteServer.listen(this.port, function(err) {
+            this.dynaliteServer.listen(this.port, (err) => {
                 if (err) reject(err)
+
+                console.log('Dynamodb endpoint:', this.port)
                 resolve(this)
             })
         } )
@@ -274,12 +281,10 @@ class Offline {
     _configureResources(object) {
         for( const name in object ) {
             const config = object[name]
-            
             if( config.Type === 'AWS::SQS::Queue' ) {
                 this.stack.sqs.configureResource(name, config)
                 // TODO: store the returned arn
             }
-
         }
     }
 

@@ -9,6 +9,9 @@ provider:
   timeout: 15
   environment:
     DYNAMO_DB_ENDPOINT: '#DYNAMO'
+
+    SQS_CART_CREATED:
+      Ref: SQSCartCreated
     SQS_PRODUCT_CREATED:
       Ref: SQSProductCreated
 
@@ -50,5 +53,7 @@ functions:
 resources:
   Resources:
     SQSProductCreated:
+      Type: AWS::SQS::Queue
+    SQSCartCreated:
       Type: AWS::SQS::Queue
 

@@ -10,14 +10,14 @@ router.route("/user/cart")
     .method("PUT")
     .handler(async event => {
     
-        const cartId = event.headers['Authorization']
-        
-        // console.log(cartId)
+        const cartId = event.headers['Authorization'] || event.headers['authorization']
         
         const updateResult = await cartService.updateContent(cartId, {
             items: event.body.items,
             coupons: event.body.coupons
         })
+        
+        console.log(cartId)
         
         return {
             statusCode: 200,
@@ -32,7 +32,7 @@ router.route("/user/cart")
     .method("GET")
     .handler(async event => {
         
-        const cartId = event.headers['Authorization']
+        const cartId = event.headers['Authorization'] || event.headers['authorization']
         const cart = await cartService.getOrCreate(cartId)
         
         return {

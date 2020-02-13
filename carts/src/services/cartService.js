@@ -29,6 +29,7 @@ class CartService {
 		let cart = await this.getById(cartId)
 		
 		if( !cart ) {
+			console.log('askdjalsdkalsdk')
 			cart = await this.create({
 				coupons: [],
 				items: []
@@ -48,7 +49,7 @@ class CartService {
 	// TODO: comment
 	async updateContent (id, content) {
 		const cart = await this.getOrCreate(id)
-		
+
 		const validProducts = await this.getValidProducts( content.items.map( item => item.product ) )
 		
 		const validProductsIds = validProducts.map( product => product.id )
