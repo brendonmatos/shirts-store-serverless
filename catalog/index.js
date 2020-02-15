@@ -12,7 +12,6 @@ router.route({
             evt.path.indexOf("catalog") >= 0;
     },
     handle: async evt => {
-        console.log(evt)
         const product = await productService.create(evt.body)
         return {
             statusCode: 200,
@@ -42,6 +41,8 @@ router.route({
 
 module.exports.handler = async (event, context) => {
     
+    // console.log(event)
+
     if( event.Records && event.Records[0] ) {
         return {
             statusCode: 500,

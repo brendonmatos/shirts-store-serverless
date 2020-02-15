@@ -12,7 +12,13 @@ class CartService {
 	
 	async create(cartParams) {
 		const cart = await cartRepository.create(cartParams)
-		await cartCreatedQueue.add(cart)
+
+		try {
+			await cartCreatedQueue.add(cart)
+		} catch(E) {
+			// console.log(E)
+		}
+		
 		return cart
 	}
 	
@@ -29,7 +35,6 @@ class CartService {
 		let cart = await this.getById(cartId)
 		
 		if( !cart ) {
-			console.log('askdjalsdkalsdk')
 			cart = await this.create({
 				coupons: [],
 				items: []
